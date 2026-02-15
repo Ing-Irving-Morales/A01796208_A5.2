@@ -36,7 +36,7 @@ def json_to_dic(catalogue):
 def cal_sales(catalogue_dic, sales):
     """Calcula el costo total de cada registro"""
     total_cost = 0.0
-    
+
     # Se itera sobre los registros de ventas
     for sale in sales:
         product_name = sale.get("Product")
@@ -79,12 +79,10 @@ else:
     if catalogue_data is None:
         print("\n*** El archivo del catálogo está vacío ***")
         sys.exit(1)
-    
     if sales_data is None:
         print("\n*** El archivo de las ventas está vacío ***")
         sys.exit(1)
 
-    
     catalogue_dic = json_to_dic(catalogue_data)
 
     total_sales = cal_sales(catalogue_dic, sales_data)
@@ -100,7 +98,7 @@ else:
     result.append(f"Tiempo de ejecucción: {elapsed_time:.6f} segundos")
 
     OUT_STRING = "\n".join(result)
-    
+
     #Mostrar en la terminal
     print(OUT_STRING)
 
