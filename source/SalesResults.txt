@@ -1,0 +1,7 @@
+Calculo de ventas
+
+El precio total para TC1.Sales.json es:
+
+$2,481.86 USD
+
+Tiempo de ejecucción: 0.000505 segundos

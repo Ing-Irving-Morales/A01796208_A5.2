@@ -66,7 +66,7 @@ def cal_sales(catalogue_dic, sales):
 
 #Programa Principal
 
-if len(sys.argv) != 2:
+if len(sys.argv) != 3:
     print("El formato de solicitud es incorrecto, " \
     "deberia ser: python *Nombre del script*.py *Archivo a leer 1 *.json *Archivo a leer 2 *.json")
     sys.exit(1)
