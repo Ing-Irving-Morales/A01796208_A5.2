@@ -1,7 +1,11 @@
+# pylint: disable=invalid-name
+# pylint: disable=broad-exception-caught
+'''
+Docstring for computeSales
+'''
 import json
 import sys
 import time
-import os
 
 def load_json(filename):
     """Carga el archivo JSON y maneja errores del archivo"""
@@ -83,9 +87,9 @@ else:
         print("\n*** El archivo de las ventas está vacío ***")
         sys.exit(1)
 
-    catalogue_dic = json_to_dic(catalogue_data)
+    catalogue_d = json_to_dic(catalogue_data)
 
-    total_sales = cal_sales(catalogue_dic, sales_data)
+    total_sales = cal_sales(catalogue_d, sales_data)
 
     end_time = time.time()
     elapsed_time = end_time - start_time
