@@ -60,62 +60,54 @@ def cal_sales(catalogue_dic, sales):
 
     return total_cost
 
-def main():
-    # Req 7: Iniciar conteo de tiempo
+#Programa Principal
+
+if len(sys.argv) != 2:
+    print("El formato de solicitud es incorrecto, " \
+    "deberia ser: python *Nombre del script*.py *Archivo a leer 1 *.json *Archivo a leer 2 *.json")
+    sys.exit(1)
+
+else:
     start_time = time.time()
-
-    # Req 5: Validación de argumentos de línea de comandos
-    if len(sys.argv) != 3:
-        print("Uso incorrecto. Formato requerido:")
-        print("python computeSales.py priceCatalogue.json salesRecord.json")
-        sys.exit(1)
-
-    price_file = sys.argv[1]
+    OUTPUT_FILE = "SalesResults.txt"
+    catalogue_file = sys.argv[1]
     sales_file = sys.argv[2]
 
-    # Req 1: Cargar archivos
-    print("--- Iniciando Proceso ---")
-    catalogue_data = load_json_file(price_file)
-    sales_data = load_json_file(sales_file)
+    catalogue_data = load_json(catalogue_file)
+    sales_data = load_json(sales_file)
 
-    if catalogue_data is None or sales_data is None:
+    if catalogue_data is None:
+        print("\n*** El archivo del catálogo está vacío ***")
+        sys.exit(1)
+    
+    if sales_data is None:
+        print("\n*** El archivo de las ventas está vacío ***")
         sys.exit(1)
 
-    # Convertir catálogo a diccionario para eficiencia (Req 6)
-    price_lookup = create_price_lookup(catalogue_data)
+    
+    catalogue_dic = json_to_dic(catalogue_data)
 
-    # Req 2: Calcular costos
-    total_sales = compute_sales(price_lookup, sales_data)
+    total_sales = cal_sales(catalogue_dic, sales_data)
 
-    # Req 7: Calcular tiempo transcurrido
     end_time = time.time()
     elapsed_time = end_time - start_time
 
-    # Formateo de salida (Req 2 - Human Readable)
-    output_lines = [
-        "TOTAL SALES REPORT",
-        "------------------",
-        f"Processing Date: {time.strftime('%Y-%m-%d %H:%M:%S')}",
-        f"Price Catalogue: {price_file}",
-        f"Sales Record:    {sales_file}",
-        "",
-        f"Total Cost:      ${total_sales:,.2f}",
-        f"Execution Time:  {elapsed_time:.4f} seconds",
-        "------------------"
-    ]
+    # Se le da formato a la salida
+    result = []
+    result.append("Calculo de ventas\n")
+    result.append(f"El precio total para {sales_file} es:\n")
+    result.append(f"${total_sales:,.2f} USD\n")
+    result.append(f"Tiempo de ejecucción: {elapsed_time:.6f} segundos")
+
+    OUT_STRING = "\n".join(result)
     
-    result_text = "\n".join(output_lines)
+    #Mostrar en la terminal
+    print(OUT_STRING)
 
-    # Req 2: Imprimir en pantalla
-    print("\n" + result_text)
-
-    # Req 2: Guardar en archivo
+    #Se guarda en archivo externo
     try:
-        with open("SalesResults.txt", "w", encoding='utf-8') as f:
-            f.write(result_text)
-        print("\nResultados guardados en 'SalesResults.txt'.")
+        with open(OUTPUT_FILE, "w", encoding='utf-8') as file:
+            file.write(OUT_STRING)
+        print(F"\nResultados guardados exitosamente en {OUTPUT_FILE}")
     except Exception as e:
-        print(f"Error al escribir el archivo de resultados: {e}")
-
-if __name__ == "__main__":
-    main()
+        print(f"Error escribiendo el archivo de resultados: {e}")
