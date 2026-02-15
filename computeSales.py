@@ -3,8 +3,8 @@ import sys
 import time
 import os
 
-def load_json_file(filename):
-    """Carga un archivo JSON y maneja errores de lectura."""
+def load_json(filename):
+    """Carga el archivo JSON y maneja errores del archivo"""
     try:
         with open(filename, 'r', encoding='utf-8') as f:
             data = json.load(f)
@@ -19,46 +19,43 @@ def load_json_file(filename):
         print(f"Error desconocido al leer '{filename}': {e}")
         return None
 
-def create_price_lookup(catalogue):
+def json_to_dic(catalogue):
     """
-    Convierte la lista del catálogo en un diccionario para búsqueda rápida (O(1)).
-    Asume que el catálogo tiene claves como 'title'/'name' y 'price'.
+    Convierte el json en un diccionario
     """
-    price_dict = {}
+    catalogue_dict = {}
     for item in catalogue:
-        # Intentamos obtener el nombre y precio con claves comunes
-        name = item.get("title") or item.get("name") or item.get("product")
+        # Se itera sobre el catálogo para obtener el producto y el precio
+        name = item.get("title")
         price = item.get("price")
 
         if name and price is not None:
-            price_dict[name] = price
-    return price_dict
+            catalogue_dict[name] = price
+    return catalogue_dict
 
-def compute_sales(price_lookup, sales_record):
-    """Calcula el costo total e identifica errores en los datos."""
+def cal_sales(catalogue_dic, sales):
+    """Calcula el costo total de cada registro"""
     total_cost = 0.0
     
-    # Iteramos sobre las ventas
-    for sale in sales_record:
-        product_name = sale.get("Product") or sale.get("title")
-        quantity = sale.get("Quantity") or sale.get("quantity")
+    # Se itera sobre los registros de ventas
+    for sale in sales:
+        product_name = sale.get("Product")
+        quantity = sale.get("Quantity")
 
         if not product_name or quantity is None:
-            print(f"Error de datos: Registro de venta inválido o incompleto: {sale}")
+            print(f"Error: Registro de venta inválido o incompleto: {sale}")
             continue
 
-        # Req 3: Manejo de datos inválidos (Producto no existe en catálogo)
-        if product_name not in price_lookup:
+        if product_name not in catalogue_dic:
             print(f"Error: El producto '{product_name}' no existe en el catálogo de precios.")
             continue
 
         try:
-            # Validar que cantidad y precio sean numéricos
-            q = float(quantity)
-            p = float(price_lookup[product_name])
-            total_cost += q * p
+            qty = int(quantity) #Se asume que las cantidades son enteras
+            price = float(catalogue_dic[product_name])
+            total_cost += qty * price
         except ValueError:
-            print(f"Error de cálculo: Cantidad o precio no numérico para '{product_name}'.")
+            print(f"Error: Cantidad o precio no numérico para '{product_name}'.")
             continue
 
     return total_cost
