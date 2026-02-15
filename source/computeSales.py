@@ -7,6 +7,7 @@ import json
 import sys
 import time
 
+
 def load_json(filename):
     """Carga el archivo JSON y maneja errores del archivo"""
     try:
@@ -17,11 +18,12 @@ def load_json(filename):
         print(f"Error: El archivo '{filename}' no fue encontrado.")
         return None
     except json.JSONDecodeError:
-        print(f"Error: El archivo '{filename}' no tiene un formato JSON válido.")
+        print(f"Error: El archivo '{filename}' tiene un formato inválido.")
         return None
     except Exception as e:
         print(f"Error desconocido al leer '{filename}': {e}")
         return None
+
 
 def json_to_dic(catalogue):
     """
@@ -37,6 +39,7 @@ def json_to_dic(catalogue):
             catalogue_dict[name] = price
     return catalogue_dict
 
+
 def cal_sales(catalogue_dic, sales):
     """Calcula el costo total de cada registro"""
     total_cost = 0.0
@@ -51,24 +54,27 @@ def cal_sales(catalogue_dic, sales):
             continue
 
         if product_name not in catalogue_dic:
-            print(f"Error: El producto '{product_name}' no existe en el catálogo de precios.")
+            print(f"Error: El producto '{product_name}' no existe"
+                  "en el catálogo de precios.")
             continue
 
         try:
-            qty = int(quantity) #Se asume que las cantidades son enteras
+            qty = int(quantity)  # Se asume que las cantidades son enteras
             price = float(catalogue_dic[product_name])
             total_cost += qty * price
         except ValueError:
-            print(f"Error: Cantidad o precio no numérico para '{product_name}'.")
+            print(f"Error: Información no numérica para '{product_name}'.")
             continue
 
     return total_cost
 
-#Programa Principal
+# Programa Principal
+
 
 if len(sys.argv) != 3:
-    print("El formato de solicitud es incorrecto, " \
-    "deberia ser: python *Nombre del script*.py *Archivo a leer 1 *.json *Archivo a leer 2 *.json")
+    print("El formato de solicitud es incorrecto, "
+          "deberia ser: python *Nombre del script*.py "
+          "*Archivo a leer 1 *.json *Archivo a leer 2 *.json")
     sys.exit(1)
 
 else:
@@ -103,10 +109,10 @@ else:
 
     OUT_STRING = "\n".join(result)
 
-    #Mostrar en la terminal
+    # Mostrar en la terminal
     print(OUT_STRING)
 
-    #Se guarda en archivo externo
+    # Se guarda en archivo externo
     try:
         with open(OUTPUT_FILE, "w", encoding='utf-8') as file:
             file.write(OUT_STRING)
