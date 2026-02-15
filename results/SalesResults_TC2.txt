@@ -1,0 +1,7 @@
+Calculo de ventas
+
+El precio total para TC2.Sales.json es:
+
+$166,568.23 USD
+
+Tiempo de ejecucción: 0.001005 segundos

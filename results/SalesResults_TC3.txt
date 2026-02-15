@@ -1,0 +1,7 @@
+Calculo de ventas
+
+El precio total para TC3.Sales.json es:
+
+$165,235.37 USD
+
+Tiempo de ejecucción: 0.001008 segundos
